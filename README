@@ -1,0 +1,55 @@
+fileUploadArea
+Copyright 2009 Peter Rudolfsen
+http://code.google.com/p/fileuploadarea
+---------------------------------------------------
+DESCRIPTION
+
+Plugin to allow multiple file upload with drag and drop directly from a file explorer
+
+Uses the new File API supported by Firefox 3.6. Enables you to target any html element and turn it into a hotspot for receiving files from the file explorer!
+Each file will be sent as a binary AJAX-request with customizable GET params. Includes support for callbacks to track the progress and completion of the file.
+
+EXAMPLES
+
+=== With all options specified ===
+
+All options have default values, so none of these are required.
+
+$('.droppable-content').fileUploadArea({
+  url: 'upload.php',
+  params: {
+    param1: 'value1',
+    parma2: 'value2'
+  },
+  onDragEnter: function () {
+    $(this).addClass('dragenter');
+  },
+  onDragOver: function () {
+    $(this).addClass('dragover');
+  },
+  onDragLeave: function () {
+    $(this).removeClass('dragover dragenter');
+  },
+  onDrop: function (file) {
+    console && console.log(file.fileName + ' dropped');
+  },
+  progress: function (percent) {
+    console && console.log(this.fileName + ' | percent: ' + percent + ' | total: ' + totalPercent);
+  },
+  fileComplete: function (response) {
+    console && console.log(this.fileName + ' | complete! response: ' + response);
+  },
+  complete: function (response) {
+    console && console.log('All files uploaded');
+  }
+});
+
+=== Simple example of receiving the file in PHP ===
+
+$targetDir = '/tmp';
+$filePath = $targetDir . '/' . $_GET['name'];
+file_put_contents($filePath, file_get_contents('php://input'));
+
+*NB!:* remember to filter/validate the GET data, if used in a real application.
+
+*Note:* "url" must point to the location of your target file. This file doesn't have to be written in PHP, any programming language that can read/write files is applicable.
